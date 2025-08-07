@@ -1,16 +1,14 @@
 package com.wonylog.controller;
 
 import com.wonylog.request.PostCreate;
+import com.wonylog.request.PostSearch;
+import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostResponse;
 import com.wonylog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -32,9 +30,18 @@ public class PostController {
         return postService.get(postId);
     }
 
-    @GetMapping("/posts")
+
+    // 아래 방법은 Spring Data jpa 의 페이징 방식
     // PageableDefault 의 기본값은 10이다. 제거를 해야 yml 에서 처리가 가능
+    /**
+    @GetMapping("/posts")
     public List<PostResponse> getList(@PageableDefault Pageable pageable){
         return postService.getList(pageable);
+    }**/
+
+    // 지금 방법은 QueryDSL 방식
+    @GetMapping("/api/posts")
+    public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+        return postService.getList(postSearch);
     }
 }

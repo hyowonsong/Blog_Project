@@ -3,6 +3,8 @@ package com.wonylog.service;
 import com.wonylog.domain.Post;
 import com.wonylog.repository.PostRepository;
 import com.wonylog.request.PostCreate;
+import com.wonylog.request.PostSearch;
+import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,13 +57,22 @@ public class PostService {
     }
 
     /**
-     * 게시글 조회(페이징 처리)
+     * 게시글 조회(페이징 처리) - Spring Data JPA의 방식
      */
+    /**
     public List<PostResponse> getList(Pageable pageable) {
-
         return postRepository.findAll(pageable)
                 .stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }**/
+
+    /**
+     * 게시글 조회(페이징 처리) - QueryDSL 방식
+     */
+    public PagingResponse<PostResponse> getList(PostSearch postSearch) {
+        Page<Post> postPage = postRepository.getList(postSearch);
+        PagingResponse<PostResponse> postList = new PagingResponse<>(postPage, PostResponse.class);
+        return postList;
     }
 }
