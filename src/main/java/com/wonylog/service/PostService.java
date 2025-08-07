@@ -7,7 +7,14 @@ import com.wonylog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -47,4 +54,14 @@ public class PostService {
         return response;
     }
 
+    /**
+     * 게시글 조회(페이징 처리)
+     */
+    public List<PostResponse> getList(Pageable pageable) {
+
+        return postRepository.findAll(pageable)
+                .stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+    }
 }

@@ -71,4 +71,28 @@ class PostServiceTest {
         assertEquals("foo", response.getTitle());
         assertEquals("bar", response.getContent());
     }
+
+    @Test
+    @DisplayName("글 1페이지 조회")
+    void test3() {
+        // given
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("제목 - " + i)
+                        .content("반포자이 - " + i)
+                        .build())
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPosts);
+
+        Pageable pageable = PageRequest.of(0,5,Sort.Direction.DESC, "id");
+
+        // when
+        List<PostResponse> posts = postService.getList(pageable);
+
+        // then
+        assertEquals(5L, posts.size());
+        assertEquals("제목 - 30", posts.get(0).getTitle());
+        assertEquals("제목 - 26", posts.get(4).getTitle());
+    }
 }

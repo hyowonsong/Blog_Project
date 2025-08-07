@@ -1,16 +1,16 @@
 package com.wonylog.controller;
 
-import com.wonylog.domain.Post;
 import com.wonylog.request.PostCreate;
 import com.wonylog.response.PostResponse;
 import com.wonylog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -30,5 +30,11 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public PostResponse get(@PathVariable Long postId){
         return postService.get(postId);
+    }
+
+    @GetMapping("/posts")
+    // PageableDefault 의 기본값은 10이다. 제거를 해야 yml 에서 처리가 가능
+    public List<PostResponse> getList(@PageableDefault Pageable pageable){
+        return postService.getList(pageable);
     }
 }
