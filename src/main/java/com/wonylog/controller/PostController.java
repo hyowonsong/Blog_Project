@@ -22,6 +22,7 @@ public class PostController {
     // 위와 같이 표현할 수도 있지만, REST API 에서는 의도를 명시하기 위해 @GetMapping
     @PostMapping("/posts")
     public void post(@Valid @RequestBody PostCreate request){
+        request.validate();
         postService.write(request);
     }
 

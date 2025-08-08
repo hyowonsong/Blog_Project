@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -114,30 +115,7 @@ class PostControllerTest {
     @Test
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
-        //given
-        List<Post> requestPosts = IntStream.range(0, 20)
-                .mapToObj(i -> Post.builder()
-                        .title("제목 " + i)
-                        .content("자이 " + i)
-                        .build())
-                .collect(Collectors.toList());
-
-        postRepository.saveAll(requestPosts);
-
-        // expected
-        mockMvc.perform(get("/posts?page=1&sort=id,desc&size=10")
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(20))
-                .andExpect(jsonPath("$[0].title").value("제목 19"))
-                .andExpect(jsonPath("$[0].content").value("자이 19"))
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
-    void test6() throws Exception {
-
+        // given
         List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
                         .title("foo" + i)
@@ -148,9 +126,36 @@ class PostControllerTest {
         postRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/api/posts?page=0&size=10")
+        mockMvc.perform(get("/posts?page=1&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()", is(10)))
+                .andExpect(jsonPath("$.items[0].title").value("foo19"))
+                .andExpect(jsonPath("$.items[0].content").value("bar19"))
+                .andExpect(jsonPath("$.page").value(1))
+                .andExpect(jsonPath("$.size").value(10))
+                .andExpect(jsonPath("$.totalCount").value(20))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
+    void test6() throws Exception {
+        // given
+        List<Post> requestPosts = IntStream.range(0, 20)
+                .mapToObj(i -> Post.builder()
+                        .title("foo" + i)
+                        .content("bar" + i)
+                        .build())
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPosts);
+
+        // expected
+        mockMvc.perform(get("/posts?page=0&size=10")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()", is(10)))
                 .andExpect(jsonPath("$.items[0].title").value("foo19"))
                 .andExpect(jsonPath("$.items[0].content").value("bar19"))
                 .andDo(print());
@@ -191,6 +196,33 @@ class PostControllerTest {
         mockMvc.perform(delete("/posts/{postId}", post.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 조회")
+    void test9() throws Exception {
+        // expected
+        mockMvc.perform(get("/posts/{postId}", 1L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 수정")
+    void test10() throws Exception {
+        // given
+        PostEdit postEdit = PostEdit.builder()
+                .title("걸")
+                .content("반포자이")
+                .build();
+
+        // expected
+        mockMvc.perform(patch("/posts/{postId}", 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit)))
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }
