@@ -3,6 +3,7 @@ package com.wonylog.service;
 import com.wonylog.domain.Post;
 import com.wonylog.repository.PostRepository;
 import com.wonylog.request.PostCreate;
+import com.wonylog.request.PostEdit;
 import com.wonylog.request.PostSearch;
 import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostResponse;
@@ -98,4 +99,53 @@ class PostServiceTest {
         assertEquals(10L, posts.getSize());
         assertEquals("foo19", posts.getItems().get(0).getTitle());
     }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("걸")
+                .content("반포자이")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        assertEquals("걸", changedPost.getTitle());
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("맨")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("맨")
+                .content("초가집")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        assertEquals("초가집", changedPost.getContent());
+    }
+
 }

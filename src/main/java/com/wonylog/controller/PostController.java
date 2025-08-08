@@ -1,6 +1,7 @@
 package com.wonylog.controller;
 
 import com.wonylog.request.PostCreate;
+import com.wonylog.request.PostEdit;
 import com.wonylog.request.PostSearch;
 import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostResponse;
@@ -40,8 +41,16 @@ public class PostController {
     }**/
 
     // 지금 방법은 QueryDSL 방식
-    @GetMapping("/api/posts")
+    @GetMapping("/posts")
     public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
         return postService.getList(postSearch);
+    }
+
+    /**
+     * 게시글 수정
+     */
+    @PatchMapping("/posts/{postId}")
+    public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {
+        postService.edit(postId, request);
     }
 }

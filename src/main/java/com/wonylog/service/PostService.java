@@ -3,8 +3,10 @@ package com.wonylog.service;
 import com.wonylog.domain.Post;
 import com.wonylog.repository.PostRepository;
 import com.wonylog.request.PostCreate;
+import com.wonylog.request.PostEdit;
 import com.wonylog.request.PostSearch;
 import com.wonylog.response.PagingResponse;
+import com.wonylog.response.PostEditor;
 import com.wonylog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,5 +77,22 @@ public class PostService {
         Page<Post> postPage = postRepository.getList(postSearch);
         PagingResponse<PostResponse> postList = new PagingResponse<>(postPage, PostResponse.class);
         return postList;
+    }
+
+    /**
+     * 게시글 수정
+     */
+    @Transactional
+    public void edit(Long id, PostEdit postEdit){
+        Post post = postRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
+
+        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+
+        post.edit(postEditor);
     }
 }
