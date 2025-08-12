@@ -66,3 +66,12 @@ asciidoctor {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+    dependsOn asciidoctor
+
+    copy {
+        from asciidoctor.outputDir
+        into "src/main/resources/static/docs"
+    }
+}
