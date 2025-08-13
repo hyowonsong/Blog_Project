@@ -18,6 +18,13 @@ public class PostController {
 
     private final PostService postService;
 
+    // Interceptor 를 위한 테스트
+    @GetMapping("/foo")
+    public String foo(@RequestAttribute("username") String userName){
+        log.info(">>>{}", userName);
+        return "foo";
+    }
+
     // @RequestMapping(value = "/posts", method = RequestMethod.GET);
     // 위와 같이 표현할 수도 있지만, REST API 에서는 의도를 명시하기 위해 @GetMapping
     @PostMapping("/posts")
