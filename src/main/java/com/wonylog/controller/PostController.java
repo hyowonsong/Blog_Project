@@ -19,11 +19,10 @@ public class PostController {
 
     private final PostService postService;
 
-    // Interceptor 를 위한 테스트
     @GetMapping("/foo")
-    public String foo(UserSession userSession){
-        log.info(">>>{}", userSession);
-        return "foo";
+    public Long foo(UserSession userSession){
+        log.info(">>>{}", userSession.id);
+        return userSession.id;
     }
 
     // @RequestMapping(value = "/posts", method = RequestMethod.GET);

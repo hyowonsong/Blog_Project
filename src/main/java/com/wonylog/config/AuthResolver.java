@@ -23,12 +23,10 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     @Override
     // 목적: 컨트롤러에 전달될 파라미터 객체를 실제로 만들어 반환
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String accessToken = webRequest.getParameter("accessToken");
+        String accessToken = webRequest.getHeader("Authorization");
         if (accessToken == null || accessToken.equals("")) {
             throw new UnAuthorized();
         }
-        UserSession userSession = new UserSession();
-        userSession.name = accessToken;
-        return userSession;
+        return new UserSession(1L);
     }
 }
