@@ -1,5 +1,6 @@
 package com.wonylog.controller;
 
+import com.wonylog.config.data.UserSession;
 import com.wonylog.request.PostCreate;
 import com.wonylog.request.PostEdit;
 import com.wonylog.request.PostSearch;
@@ -20,8 +21,8 @@ public class PostController {
 
     // Interceptor 를 위한 테스트
     @GetMapping("/foo")
-    public String foo(@RequestAttribute("username") String userName){
-        log.info(">>>{}", userName);
+    public String foo(UserSession userSession){
+        log.info(">>>{}", userSession);
         return "foo";
     }
 
