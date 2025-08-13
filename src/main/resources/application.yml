@@ -14,3 +14,7 @@ spring:
     web:
       pageable:
         one-indexed-parameters: true
+
+  sql:
+    init:
+      mode: embedded
