@@ -7,3 +7,9 @@ Content-Type: application/json
   "email": "woniwoni@gmail.com",
   "password": "1234"
 }
+
+### 인증 페이지 요청
+
+POST http://localhost:8080/foo
+Content-Type: application/json
+Cookie : SESSION=7b8786c7-6c90-447e-a4a6-5548ef28e34
