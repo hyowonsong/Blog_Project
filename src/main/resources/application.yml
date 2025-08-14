@@ -9,12 +9,15 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
+  jpa:
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   data:
     web:
       pageable:
         one-indexed-parameters: true
 
-  sql:
-    init:
-      mode: embedded
+wony:
+  jwt-key: "rTPmA9Sgk+Q1XwuJbG7E6xFFUhQpdi+al5iyPnRTK/Q="

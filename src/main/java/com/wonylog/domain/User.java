@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "users")  // "user" 대신 "users"로 변경
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
