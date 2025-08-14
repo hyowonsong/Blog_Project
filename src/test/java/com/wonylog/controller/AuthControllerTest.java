@@ -144,4 +144,24 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("로그인 후 검증되지 않은 세션값으로 권한이 필요한 페이지에 접속할 수 없다.")
+    void test5() throws Exception {
+        // given
+        User user = User.builder()
+                .name("맨")
+                .email("woniwoni@gmail.com")
+                .password("1234")
+                .build();
+        Session session = user.addSession();
+        userRepository.save(user);
+
+        // expected
+        mockMvc.perform(get("/foo")
+                        .header("Authorization", session.getAccessToken() + "-other")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
+    }
 }
