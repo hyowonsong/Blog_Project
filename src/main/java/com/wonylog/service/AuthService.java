@@ -7,7 +7,6 @@ import com.wonylog.domain.User;
 import com.wonylog.exception.AlreadyExistsEmailException;
 import com.wonylog.exception.InvalidSigninInformation;
 import com.wonylog.repository.UserRepository;
-import com.wonylog.request.Login;
 import com.wonylog.request.Signup;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,8 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
+    /**
+    // 시큐리티 도입 위해 주석 처리
     @Transactional
     public Long signin(Login login) {
         User user = userRepository.findByEmail(login.getEmail())
@@ -37,7 +38,7 @@ public class AuthService {
         }
 
         return user.getId();
-    }
+    }**/
 
     public void signup(Signup signup) {
         Optional<User> userOptional = userRepository.findByEmail(signup.getEmail());

@@ -1,8 +1,6 @@
 package com.wonylog.controller;
 
 import com.wonylog.config.AppConfig;
-import com.wonylog.request.Login;
-import com.wonylog.response.SessionResponse;
 import com.wonylog.service.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -24,7 +22,8 @@ public class AuthController {
     private final AuthService authService;
     private final AppConfig appConfig;
 
-
+    /**
+     * // 시큐리티 도입 위해 로그인 메서드 주석 처리
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
         Long userId = authService.signin(login);
@@ -38,7 +37,7 @@ public class AuthController {
                 .compact();
 
         return new SessionResponse(jws);
-    }
+    }**/
 
     @PostMapping("/auth/signup")
     public void signup(@RequestBody Signup signup) {

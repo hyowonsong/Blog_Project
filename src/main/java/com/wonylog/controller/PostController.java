@@ -1,6 +1,5 @@
 package com.wonylog.controller;
 
-import com.wonylog.config.data.UserSession;
 import com.wonylog.request.PostCreate;
 import com.wonylog.request.PostEdit;
 import com.wonylog.request.PostSearch;
@@ -18,12 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-
-    @GetMapping("/foo")
-    public Long foo(UserSession userSession){
-        log.info(">>>{}", userSession.id);
-        return userSession.id;
-    }
 
     // @RequestMapping(value = "/posts", method = RequestMethod.GET);
     // 위와 같이 표현할 수도 있지만, REST API 에서는 의도를 명시하기 위해 @GetMapping

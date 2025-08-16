@@ -1,10 +1,7 @@
 package com.wonylog.config;
 
-import com.wonylog.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private final SessionRepository sessionRepository;
+    // private final SessionRepository sessionRepository;
     private final AppConfig appConfig;
 
     /**
@@ -25,8 +22,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/error", "/favicon.ico", "/foo");
     }**/
 
+    /**
+     * // 스프링 시큐리티 사용시 삭제
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new AuthResolver(sessionRepository, appConfig));
-    }
+    }**/
 }

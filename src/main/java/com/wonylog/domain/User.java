@@ -28,10 +28,6 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    // session 관련
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Session> sessions = new ArrayList<>();
-
     @Builder
     public User(String name, String email, String password) {
         this.name = name;
@@ -40,6 +36,8 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
+    /**
+    // 시큐리티 도입 위해 주석 처리
     public Session addSession() {
         Session session = Session.builder()
                 .user(this)
@@ -47,5 +45,5 @@ public class User {
         sessions.add(session);
 
         return session;
-    }
+    }**/
 }
