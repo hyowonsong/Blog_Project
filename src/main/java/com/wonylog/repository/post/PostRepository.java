@@ -1,4 +1,4 @@
-package com.wonylog.repository;
+package com.wonylog.repository.post;
 
 import com.wonylog.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,8 +1,8 @@
-package com.wonylog.repository;
+package com.wonylog.repository.post;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wonylog.domain.Post;
-import com.wonylog.request.PostSearch;
+import com.wonylog.request.post.PostSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

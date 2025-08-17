@@ -1,4 +1,4 @@
-package com.wonylog.request;
+package com.wonylog.request.post;
 
 import com.wonylog.exception.InvalidRequest;
 import jakarta.validation.constraints.NotBlank;

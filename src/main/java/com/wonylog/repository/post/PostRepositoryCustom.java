@@ -1,8 +1,8 @@
-package com.wonylog.repository;
+package com.wonylog.repository.post;
 
 
 import com.wonylog.domain.Post;
-import com.wonylog.request.PostSearch;
+import com.wonylog.request.post.PostSearch;
 import org.springframework.data.domain.Page;
 
 public interface PostRepositoryCustom {

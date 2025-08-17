@@ -1,9 +1,10 @@
 package com.wonylog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wonylog.config.BlogMockUser;
 import com.wonylog.domain.Post;
-import com.wonylog.repository.PostRepository;
-import com.wonylog.request.PostCreate;
+import com.wonylog.repository.post.PostRepository;
+import com.wonylog.request.post.PostCreate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,6 +69,7 @@ public class PostControllerDocTest {
     }
 
     @Test
+    @BlogMockUser
     @DisplayName("글 등록")
     void test2() throws Exception {
         // given

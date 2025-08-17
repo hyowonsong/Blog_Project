@@ -2,25 +2,20 @@ package com.wonylog.service;
 
 import com.wonylog.domain.Post;
 import com.wonylog.exception.PostNotFound;
-import com.wonylog.repository.PostRepository;
-import com.wonylog.request.PostCreate;
-import com.wonylog.request.PostEdit;
-import com.wonylog.request.PostSearch;
+import com.wonylog.exception.UserNotFound;
+import com.wonylog.repository.UserRepository;
+import com.wonylog.repository.post.PostRepository;
+import com.wonylog.request.post.PostCreate;
+import com.wonylog.request.post.PostEdit;
+import com.wonylog.request.post.PostSearch;
 import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostEditor;
 import com.wonylog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,14 +23,18 @@ import java.util.stream.Collectors;
 public class PostService {
 
     // @Autowired
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     /**
      * 글을 저장하는 메서드
      */
-    public void write(PostCreate postCreate){
+    public void write(Long userId, PostCreate postCreate) {
         // postCreate 는 현재 DTO 형태이지 엔티티 형태가 아니기 때문에 들어가지지 않음
         // 따라서, postCreate 를 엔티티 형태로 변환시켜주어야 한다.
+        var user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())

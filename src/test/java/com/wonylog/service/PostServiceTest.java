@@ -1,11 +1,13 @@
 package com.wonylog.service;
 
 import com.wonylog.domain.Post;
+import com.wonylog.domain.User;
 import com.wonylog.exception.PostNotFound;
-import com.wonylog.repository.PostRepository;
-import com.wonylog.request.PostCreate;
-import com.wonylog.request.PostEdit;
-import com.wonylog.request.PostSearch;
+import com.wonylog.repository.UserRepository;
+import com.wonylog.repository.post.PostRepository;
+import com.wonylog.request.post.PostCreate;
+import com.wonylog.request.post.PostEdit;
+import com.wonylog.request.post.PostSearch;
 import com.wonylog.response.PagingResponse;
 import com.wonylog.response.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,22 +31,33 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
-    void clean(){
+    void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1(){
         // given
+        var user = User.builder()
+                .name("호돌맨")
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
         // when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         // then
         assertEquals(1L, postRepository.count());

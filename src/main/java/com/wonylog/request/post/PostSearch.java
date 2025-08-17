@@ -1,4 +1,4 @@
-package com.wonylog.request;
+package com.wonylog.request.post;
 
 import lombok.Builder;
 import lombok.Getter;

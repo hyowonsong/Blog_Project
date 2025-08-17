@@ -61,6 +61,17 @@ dependencies {
     // 비밀번호 암호화 crypto
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+
+    // 시큐리티 관련 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
+
+    // 스프링 시큐리티 JDBC 세션
+    implementation 'org.springframework.session:spring-session-jdbc'
+
+    // test 쪽 lombok
+    testCompileOnly "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
 }
 
 

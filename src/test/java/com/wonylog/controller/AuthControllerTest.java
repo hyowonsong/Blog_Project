@@ -4,6 +4,7 @@ package com.wonylog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wonylog.domain.User;
 import com.wonylog.repository.UserRepository;
+import com.wonylog.request.Signup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,5 +40,23 @@ class AuthControllerTest {
     @BeforeEach
     void clean() {
         userRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    void test6() throws Exception {
+        // given
+        Signup signup = Signup.builder()
+                .email("hodolman88@gmail.com")
+                .password("1234")
+                .name("호돌맨")
+                .build();
+
+        // expected
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
